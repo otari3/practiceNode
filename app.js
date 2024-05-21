@@ -5,6 +5,7 @@ const app = express();
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+const wrongPage = require("./controllers/wrongPage");
 
 app.set("view engine", "ejs");
 
@@ -17,9 +18,5 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/admin", adminRoutes.router);
 
 app.use(shopRoutes);
-app.use((req, res, next) => {
-  // res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
-  res.status(404).render("404", { pageTitle: "page Not Found" });
-});
-
+app.use(wrongPage.wrongPage);
 app.listen(3000);

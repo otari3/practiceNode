@@ -11,7 +11,6 @@ exports.postProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  const product = products;
   res.render("shop", {
     prods: products,
     pageTitle: "Shop",
