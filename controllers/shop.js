@@ -10,7 +10,7 @@ exports.home = (req, res, next) => {
 };
 exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
-    res.render("./shop/shop.ejs", {
+    res.render("./shop/product-list.ejs", {
       prods: products,
       pageTitle: "products",
       path: "/products",
