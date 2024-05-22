@@ -195,6 +195,10 @@ form {
   background-color: #00695c;
   color: white;
 }
+img {
+  height: 200px;
+  object-fit: contain;
+}
 
 @media (min-width: 768px) {
   .main-header__nav {

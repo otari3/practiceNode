@@ -5,5 +5,12 @@
     "description": "This is apple",
     "price": "17.99",
     "id": "0.3321154030273554"
+  },
+  {
+    "title": "chair",
+    "imageUrl": "https://images-cdn.ubuy.ae/633abe880d4bdc41321a6938-home-office-chair-ergonomic-desk-chair.jpg",
+    "description": "this is chair",
+    "price": "10.00",
+    "id": "0.4829556485234914"
   }
 ]
