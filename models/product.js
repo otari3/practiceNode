@@ -50,8 +50,9 @@ module.exports = class Product {
         price: body.price,
         id: body.id,
       };
-      fs.writeFile(p, JSON.stringify(products), (err) => {});
-      return res.redirect("/");
+      fs.writeFile(p, JSON.stringify(products), (err) => {
+        return res.redirect("/admin/products");
+      });
     });
   }
 };

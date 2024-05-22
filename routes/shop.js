@@ -8,5 +8,4 @@ router.get("/products/:productId", products.getProduct);
 router.get("/cart", products.getCart);
 router.post("/cart", products.postCart);
 router.get("/checkout", products.getCheckOut);
-router.get("/product-detail", products.getProductDetails);
 module.exports = router;
