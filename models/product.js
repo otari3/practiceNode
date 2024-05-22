@@ -38,4 +38,20 @@ module.exports = class Product {
       return cb(product);
     });
   }
+  static updateProduct(body, res) {
+    getProductsFromFile((products) => {
+      let position = products.findIndex((item) => {
+        return item.id === body.id;
+      });
+      products[position] = {
+        title: body.title,
+        imageUrl: body.imageUrl,
+        description: body.description,
+        price: body.price,
+        id: body.id,
+      };
+      fs.writeFile(p, JSON.stringify(products), (err) => {});
+      return res.redirect("/");
+    });
+  }
 };

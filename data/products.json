@@ -1,16 +1,1 @@
-[
-  {
-    "title": "apple",
-    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOGw2uS1cVzeSCOlWPA466XzC11QfuVBO8J5L-As7B8A&s",
-    "description": "This is apple",
-    "price": "17.99",
-    "id": "0.3321154030273554"
-  },
-  {
-    "title": "chair",
-    "imageUrl": "https://images-cdn.ubuy.ae/633abe880d4bdc41321a6938-home-office-chair-ergonomic-desk-chair.jpg",
-    "description": "this is chair",
-    "price": "10.00",
-    "id": "0.4829556485234914"
-  }
-]
+[{"title":"apple","imageUrl":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOGw2uS1cVzeSCOlWPA466XzC11QfuVBO8J5L-As7B8A&s","description":"This is an apple","price":"17.00","id":"0.3321154030273554"},{"title":"chair","imageUrl":"https://images-cdn.ubuy.ae/633abe880d4bdc41321a6938-home-office-chair-ergonomic-desk-chair.jpg","description":"this is chair","price":"10.00","id":"0.4829556485234914"},{"title":"phone ","imageUrl":"https://media.4rgos.it/i/Argos/9520103_R_Z001A?w=750&h=440&qlt=70","description":"this is phone","price":"400","id":"0.4052059154726426"}]
