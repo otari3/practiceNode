@@ -48,3 +48,6 @@ exports.getEditProduct = (req, res, next) => {
 exports.postEditProduct = (req, res, next) => {
   Product.updateProduct(req.body, res);
 };
+exports.deleteProduct = (req, res, next) => {
+  Product.deleteById(req.body.id, res);
+};

@@ -13,6 +13,14 @@ const getProductsFromFile = (cb) => {
     cb(JSON.parse(data));
   });
 };
+const index = (id, cb) => {
+  getProductsFromFile((products) => {
+    let index = products.findIndex((item) => {
+      return Number(id) === Number(item.id);
+    });
+    return cb(index, products);
+  });
+};
 module.exports = class Product {
   constructor(title, imageUrl, description, price) {
     this.title = title;
@@ -39,11 +47,8 @@ module.exports = class Product {
     });
   }
   static updateProduct(body, res) {
-    getProductsFromFile((products) => {
-      let position = products.findIndex((item) => {
-        return item.id === body.id;
-      });
-      products[position] = {
+    index(body.id, (index, products) => {
+      products[index] = {
         title: body.title,
         imageUrl: body.imageUrl,
         description: body.description,
@@ -52,6 +57,16 @@ module.exports = class Product {
       };
       fs.writeFile(p, JSON.stringify(products), (err) => {
         return res.redirect("/admin/products");
+      });
+    });
+  }
+  static deleteById(id, res) {
+    index(id, (index, products) => {
+      products.splice(index, 1);
+      fs.writeFile(p, JSON.stringify(products), (err) => {
+        if (!err) {
+          return res.redirect("/admin/products");
+        }
       });
     });
   }
