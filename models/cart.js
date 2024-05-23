@@ -25,9 +25,32 @@ module.exports = class Cart {
       carts.totalPrice = Math.round(
         Number(carts.totalPrice) + Number(productPrice)
       );
-      fs.writeFile(p, JSON.stringify(carts), (err) => {
-        console.log(err);
+      fs.writeFile(p, JSON.stringify(carts), (err) => {});
+    });
+  }
+  static deleteProduct(id, productPrice) {
+    fs.readFile(p, (err, data) => {
+      if (err) {
+        return;
+      }
+      const cart = JSON.parse(data);
+      if (cart.products.length <= 0) {
+        return;
+      }
+      let index = cart.products.findIndex((items) => {
+        return Number(id) === Number(items.id);
       });
+      let priceMinus = cart.products[index].qty * productPrice;
+      cart.totalPrice -= priceMinus;
+      cart.products.splice(index, 1);
+      fs.writeFile(p, JSON.stringify(cart), (err) => {});
+    });
+  }
+  static fetchAll(cb) {
+    fs.readFile(p, (err, data) => {
+      if (!err) {
+        cb(JSON.parse(data));
+      }
     });
   }
 };

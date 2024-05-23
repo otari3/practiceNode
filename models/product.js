@@ -13,6 +13,7 @@ const getProductsFromFile = (cb) => {
     cb(JSON.parse(data));
   });
 };
+const Cart = require("./cart");
 const index = (id, cb) => {
   getProductsFromFile((products) => {
     let index = products.findIndex((item) => {
@@ -60,11 +61,12 @@ module.exports = class Product {
       });
     });
   }
-  static deleteById(id, res) {
+  static deleteById(id, res, productPrice) {
     index(id, (index, products) => {
       products.splice(index, 1);
       fs.writeFile(p, JSON.stringify(products), (err) => {
         if (!err) {
+          Cart.deleteProduct(id, productPrice);
           return res.redirect("/admin/products");
         }
       });
