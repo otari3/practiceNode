@@ -10,44 +10,23 @@ exports.getAddProduct = (req, res, next) => {
 exports.postProduct = (req, res, next) => {
   const product = new Product(
     req.body.title,
-    req.body.imageUrl,
+    req.body.price,
     req.body.description,
-    req.body.price
+    req.body.imageUrl
   );
-  product.save();
-  res.redirect("/");
-};
-exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("./admin/products.ejs", {
-      prods: products,
-      pageTitle: "admin Products",
-      path: "/admin/products",
+  product
+    .save()
+    .then((responce) => {
+      res.redirect("/");
+    })
+    .catch((err) => {
+      throw err;
     });
-  });
 };
+exports.getProducts = (req, res, next) => {};
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   const id = req.params.id;
-  if (!editMode) {
-    return res.redirect("/");
-  } else {
-    Product.findById(id, (product) => {
-      if (!product) {
-        return res.redirect("/");
-      }
-      res.render("./admin/edit-product.ejs", {
-        pageTitle: "Products",
-        path: "/admin//edit-product",
-        editing: editMode,
-        product: product,
-      });
-    });
-  }
 };
-exports.postEditProduct = (req, res, next) => {
-  Product.updateProduct(req.body, res);
-};
-exports.deleteProduct = (req, res, next) => {
-  Product.deleteById(req.body.id, res,req.body.price);
-};
+exports.postEditProduct = (req, res, next) => {};
+exports.deleteProduct = (req, res, next) => {};

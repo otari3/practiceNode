@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
+const mongoConnect = require("./helpers/database");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
@@ -16,4 +17,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/admin", adminRoutes.router);
 app.use(shopRoutes);
 app.use(wrongPage.wrongPage);
-app.listen(3000);
+mongoConnect.mango(() => {
+  app.listen(3000);
+});

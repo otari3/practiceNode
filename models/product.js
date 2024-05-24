@@ -1,75 +1,36 @@
-const fs = require("fs");
-const path = require("path");
-const p = path.join(
-  path.dirname(require.main.filename),
-  "data",
-  "products.json"
-);
-const getProductsFromFile = (cb) => {
-  fs.readFile(p, (err, data) => {
-    if (err) {
-      return cb([]);
-    }
-    cb(JSON.parse(data));
-  });
-};
-const Cart = require("./cart");
-const index = (id, cb) => {
-  getProductsFromFile((products) => {
-    let index = products.findIndex((item) => {
-      return Number(id) === Number(item.id);
-    });
-    return cb(index, products);
-  });
-};
-module.exports = class Product {
-  constructor(title, imageUrl, description, price) {
+const mongoConect = require("../helpers/database");
+class Product {
+  constructor(title, price, description, imageUrl) {
     this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
     this.price = price;
+    this.description = description;
+    this.imageUrl = imageUrl;
   }
   save() {
-    this.id = Math.random().toString();
-    getProductsFromFile((products) => {
-      products.push(this);
-      fs.writeFile(p, JSON.stringify(products), (err) => {});
-    });
-  }
-  static fetchAll(cb) {
-    getProductsFromFile(cb);
-  }
-  static findById(id, cb) {
-    getProductsFromFile((products) => {
-      const product = products.find((items) => {
-        return items.id === id;
+    const db = mongoConect.db();
+    return db
+      .collection("products")
+      .insertOne(this)
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        throw err;
       });
-      return cb(product);
-    });
   }
-  static updateProduct(body, res) {
-    index(body.id, (index, products) => {
-      products[index] = {
-        title: body.title,
-        imageUrl: body.imageUrl,
-        description: body.description,
-        price: body.price,
-        id: body.id,
-      };
-      fs.writeFile(p, JSON.stringify(products), (err) => {
-        return res.redirect("/admin/products");
+  static fetchAll() {
+    const db = mongoConect.db();
+    return db
+      .collection("products")
+      .find()
+      .toArray()
+      .then((products) => {
+        return products;
+      })
+      .catch((err) => {
+        throw err;
       });
-    });
   }
-  static deleteById(id, res, productPrice) {
-    index(id, (index, products) => {
-      products.splice(index, 1);
-      fs.writeFile(p, JSON.stringify(products), (err) => {
-        if (!err) {
-          Cart.deleteProduct(id, productPrice);
-          return res.redirect("/admin/products");
-        }
-      });
-    });
-  }
-};
+}
+
+module.exports = Product;

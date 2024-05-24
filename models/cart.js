@@ -34,12 +34,12 @@ module.exports = class Cart {
         return;
       }
       const cart = JSON.parse(data);
-      if (cart.products.length <= 0) {
-        return;
-      }
       let index = cart.products.findIndex((items) => {
         return Number(id) === Number(items.id);
       });
+      if (index < 0) {
+        return;
+      }
       let priceMinus = cart.products[index].qty * productPrice;
       cart.totalPrice -= priceMinus;
       cart.products.splice(index, 1);
