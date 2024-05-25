@@ -1,4 +1,6 @@
 const Product = require("../models/product");
+const mongodb = require("mongodb");
+const ObjectId = mongodb.ObjectId;
 exports.getAddProduct = (req, res, next) => {
   res.render("./admin/edit-product.ejs", {
     pageTitle: "Products",
@@ -23,10 +25,45 @@ exports.postProduct = (req, res, next) => {
       throw err;
     });
 };
-exports.getProducts = (req, res, next) => {};
+exports.getProducts = (req, res, next) => {
+  Product.fetchAll()
+    .then((products) => {
+      res.render("./admin/products.ejs", {
+        prods: products,
+        path: "/admin/products",
+        pageTitle: "admin products",
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   const id = req.params.id;
+  if (!editMode) {
+    return res.redirect("/");
+  }
+  Product.findById(id)
+    .then((product) => {
+      res.render("./admin/edit-product.ejs", {
+        pageTitle: "Products",
+        path: "/admin/add-product",
+        product: product,
+        editing: editMode,
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
 };
-exports.postEditProduct = (req, res, next) => {};
+exports.postEditProduct = (req, res, next) => {
+  Product.updateProduct(ObjectId.createFromHexString(req.body.id), req.body)
+    .then(() => {
+      res.redirect("/admin/products");
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
 exports.deleteProduct = (req, res, next) => {};

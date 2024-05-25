@@ -13,9 +13,32 @@ exports.home = (req, res, next) => {
       throw err;
     });
 };
-exports.getProducts = (req, res, next) => {};
+exports.getProducts = (req, res, next) => {
+  Product.fetchAll()
+    .then((products) => {
+      res.render("./shop/product-list.ejs", {
+        prods: products,
+        path: "/products",
+        pageTitle: "products",
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
+  Product.findById(prodId)
+    .then((product) => {
+      res.render("./shop/product-detail.ejs", {
+        product: product,
+        path: "/details",
+        pageTitle: "details",
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
 };
 exports.getCart = (req, res, next) => {};
 exports.postCart = (req, res, next) => {};
