@@ -66,7 +66,18 @@ class Product {
         return;
       })
       .catch((err) => {
-        console.log(body);
+        throw err;
+      });
+  }
+  static deleteById(id) {
+    const db = mongoConect.db();
+    return db
+      .collection("products")
+      .deleteOne({ _id: id })
+      .then(() => {
+        return;
+      })
+      .catch((err) => {
         throw err;
       });
   }

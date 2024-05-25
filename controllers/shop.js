@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const cart = require("../models/cart");
+const User = require("../models/users");
 exports.home = (req, res, next) => {
   Product.fetchAll()
     .then((products) => {
@@ -35,6 +36,23 @@ exports.getProduct = (req, res, next) => {
         path: "/details",
         pageTitle: "details",
       });
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+exports.getSingUp = (req, res, next) => {
+  res.render("./shop/users.ejs", {
+    pageTitle: "Userl ogin",
+    path: "/userlogin",
+  });
+};
+exports.postUser = (req, res, next) => {
+  const user = new User(req.body.username, req.body.email);
+  user
+    .save()
+    .then((r) => {
+      res.redirect("/");
     })
     .catch((err) => {
       throw err;

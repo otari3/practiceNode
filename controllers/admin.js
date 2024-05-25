@@ -66,4 +66,13 @@ exports.postEditProduct = (req, res, next) => {
       throw err;
     });
 };
-exports.deleteProduct = (req, res, next) => {};
+exports.deleteProduct = (req, res, next) => {
+  const id = ObjectId.createFromHexString(req.body.id);
+  Product.deleteById(id)
+    .then(() => {
+      res.redirect("/");
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
