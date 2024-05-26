@@ -14,7 +14,8 @@ exports.postProduct = (req, res, next) => {
     req.body.title,
     req.body.price,
     req.body.description,
-    req.body.imageUrl
+    req.body.imageUrl,
+    req.user._id
   );
   product
     .save()
@@ -58,7 +59,11 @@ exports.getEditProduct = (req, res, next) => {
     });
 };
 exports.postEditProduct = (req, res, next) => {
-  Product.updateProduct(ObjectId.createFromHexString(req.body.id), req.body)
+  Product.updateProduct(
+    ObjectId.createFromHexString(req.body.id),
+    req.body,
+    req.user._id
+  )
     .then(() => {
       res.redirect("/admin/products");
     })

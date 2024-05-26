@@ -1,12 +1,12 @@
 const mongoConect = require("../helpers/database");
 const mongodb = require("mongodb");
 class Product {
-  constructor(title, price, description, imageUrl, id) {
+  constructor(title, price, description, imageUrl, userId) {
     this.title = title;
     this.price = price;
     this.description = description;
     this.imageUrl = imageUrl;
-    this._id = id;
+    this.userId = userId;
   }
   save() {
     const db = mongoConect.db();
@@ -46,7 +46,7 @@ class Product {
         throw err;
       });
   }
-  static updateProduct(prodId, body) {
+  static updateProduct(prodId, body, userId) {
     const db = mongoConect.db();
     return db
       .collection("products")
@@ -59,6 +59,7 @@ class Product {
             price: body.price,
             description: body.description,
             imageUrl: body.imageUrl,
+            userId: userId,
           },
         }
       )

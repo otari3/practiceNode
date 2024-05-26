@@ -43,7 +43,7 @@ exports.getProduct = (req, res, next) => {
 };
 exports.getSingUp = (req, res, next) => {
   res.render("./shop/users.ejs", {
-    pageTitle: "Userl ogin",
+    pageTitle: "Userlogin",
     path: "/userlogin",
   });
 };
@@ -58,8 +58,33 @@ exports.postUser = (req, res, next) => {
       throw err;
     });
 };
-exports.getCart = (req, res, next) => {};
-exports.postCart = (req, res, next) => {};
+exports.getCart = (req, res, next) => {
+  req.user
+    .getCart()
+    .then((products) => {
+      res.render("./shop/cart.ejs", {
+        pageTitle: "cart",
+        path: "/cart",
+        products: products,
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+exports.postCart = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.findById(prodId).then((product) => {
+    return req.user
+      .addToCart(product)
+      .then(() => {
+        res.redirect("/");
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
+};
 exports.deleteCart = (req, res, next) => {};
 exports.getCheckOut = (req, res, next) => {
   res.render("./shop/checkout.ejs", {
