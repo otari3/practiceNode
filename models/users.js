@@ -29,8 +29,13 @@ class User {
     if (cartProductIndex >= 0) {
       qty = this.cart.items[cartProductIndex].quantity + 1;
       updatedCartItems[cartProductIndex].quantity = qty;
+      updatedCartItems[cartProductIndex].price = qty * product.price;
     } else {
-      updatedCartItems.push({ productId: product._id, quantity: qty });
+      updatedCartItems.push({
+        productId: product._id,
+        quantity: qty,
+        price: product.price,
+      });
     }
 
     const updatedCart = {
@@ -52,6 +57,7 @@ class User {
         throw err;
       });
   }
+
   getCart() {
     const db = database();
     const productsIds = this.cart.items.map((i) => {
@@ -70,6 +76,53 @@ class User {
             }).quantity,
           };
         });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }
+
+  addOrder() {
+    const db = database();
+    let totalPrice = 0;
+    for (let i = 0; i < this.cart.items.length; i++) {
+      totalPrice += Number(this.cart.items[i].price);
+    }
+    return db
+      .collection("orders")
+      .insertOne({ ...this.cart, totalPrice: totalPrice })
+      .then(() => {
+        this.cart = { items: [] };
+        return db
+          .collection("users")
+          .updateOne(
+            {
+              _id: this._id,
+            },
+            { $set: { cart: { items: [] } } }
+          )
+          .then(() => {
+            return;
+          })
+          .catch((err) => {
+            throw err;
+          });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }
+
+  deleteCart(prodId) {
+    const db = database();
+    const newCart = this.cart.items.filter((i) => {
+      return i.productId.toString() !== prodId.toString();
+    });
+    return db
+      .collection("users")
+      .updateOne({ _id: this._id }, { $set: { cart: { items: newCart } } })
+      .then(() => {
+        return;
       })
       .catch((err) => {
         throw err;

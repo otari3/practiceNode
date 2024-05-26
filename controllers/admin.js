@@ -75,6 +75,7 @@ exports.deleteProduct = (req, res, next) => {
   const id = ObjectId.createFromHexString(req.body.id);
   Product.deleteById(id)
     .then(() => {
+      req.user.deleteCart(id);
       res.redirect("/");
     })
     .catch((err) => {

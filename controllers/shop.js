@@ -78,17 +78,36 @@ exports.postCart = (req, res, next) => {
     return req.user
       .addToCart(product)
       .then(() => {
-        res.redirect("/");
+        res.redirect("/cart");
       })
       .catch((err) => {
         throw err;
       });
   });
 };
-exports.deleteCart = (req, res, next) => {};
+exports.deleteCart = (req, res, next) => {
+  req.user
+    .deleteCart(req.body.id)
+    .then(() => {
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
 exports.getCheckOut = (req, res, next) => {
   res.render("./shop/checkout.ejs", {
     pageTitle: "checkout",
     path: "/checkout",
   });
+};
+exports.postOrders = (req, res, next) => {
+  req.user
+    .addOrder()
+    .then(() => {
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      throw err;
+    });
 };
