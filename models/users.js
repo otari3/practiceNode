@@ -20,6 +20,7 @@ class User {
         throw err;
       });
   }
+
   addToCart(product) {
     const cartProductIndex = this.cart.items.findIndex((item) => {
       return item.productId.toString() === product._id.toString();
@@ -88,9 +89,19 @@ class User {
     for (let i = 0; i < this.cart.items.length; i++) {
       totalPrice += Number(this.cart.items[i].price);
     }
-    return db
-      .collection("orders")
-      .insertOne({ ...this.cart, totalPrice: totalPrice })
+    return this.getCart()
+      .then((products) => {
+        const order = {
+          items: products,
+          totalPrice: totalPrice,
+          user: {
+            _id: this._id,
+            username: this.username,
+            email: this.email,
+          },
+        };
+        return db.collection("orders").insertOne({ ...order });
+      })
       .then(() => {
         this.cart = { items: [] };
         return db
@@ -111,6 +122,11 @@ class User {
       .catch((err) => {
         throw err;
       });
+  }
+
+  getOrders() {
+    const db = database();
+    return db.collection("orders").find({ "user._id": this._id }).toArray();
   }
 
   deleteCart(prodId) {

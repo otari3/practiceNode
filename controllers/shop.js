@@ -111,3 +111,13 @@ exports.postOrders = (req, res, next) => {
       throw err;
     });
 };
+exports.getOrder = (req, res, next) => {
+  req.user
+    .getOrders()
+    .then((orders) => {
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      throw err;
+    });
+};

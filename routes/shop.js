@@ -12,4 +12,5 @@ router.get("/checkout", products.getCheckOut);
 router.get("/userlogin", products.getSingUp);
 router.post("/userlogin", products.postUser);
 router.post("/create-orders", products.postOrders);
+router.get("/orders", products.getOrder);
 module.exports = router;
