@@ -59,6 +59,26 @@ class User {
       });
   }
 
+  clearingCart(products) {
+    const db = database();
+    if (products.length <= 0) {
+      this.cart = { items: [] };
+      return db
+        .collection("users")
+        .updateOne(
+          {
+            _id: this._id,
+          },
+          { $set: { cart: { items: [] } } }
+        )
+        .then(() => {
+          return;
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+  }
   getCart() {
     const db = database();
     const productsIds = this.cart.items.map((i) => {
@@ -69,6 +89,7 @@ class User {
       .find({ _id: { $in: productsIds } })
       .toArray()
       .then((products) => {
+        this.clearingCart(products);
         return products.map((p) => {
           return {
             ...p,
