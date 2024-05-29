@@ -15,16 +15,16 @@ app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use((req, res, next) => {
-  User.findById("6655f0369f1e22cd0d44ec3c")
-    .then((users) => {
-      req.user = new User(users.username, users.email, users.cart, users._id);
-      next();
-    })
-    .catch((err) => {
-      throw err;
-    });
-});
+// app.use((req, res, next) => {
+//   User.findById("6655f0369f1e22cd0d44ec3c")
+//     .then((users) => {
+//       req.user = new User(users.username, users.email, users.cart, users._id);
+//       next();
+//     })
+//     .catch((err) => {
+//       throw err;
+//     });
+// });
 
 app.use("/admin", adminRoutes.router);
 app.use(shopRoutes);
