@@ -31,7 +31,7 @@ app.use(shopRoutes);
 app.use(wrongPage.wrongPage);
 mongoose
   .connect(
-    "mongodb+srv://oto:tvali333@cluster0.azczi3n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://oto:tvali333@cluster0.azczi3n.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0"
   )
   .then((res) => {
     app.listen(3000);

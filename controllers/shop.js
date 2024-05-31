@@ -2,7 +2,7 @@ const Product = require("../models/product");
 const cart = require("../models/cart");
 const User = require("../models/users");
 exports.home = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       res.render("./shop/index.ejs", {
         prods: products,
@@ -15,7 +15,7 @@ exports.home = (req, res, next) => {
     });
 };
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       res.render("./shop/product-list.ejs", {
         prods: products,

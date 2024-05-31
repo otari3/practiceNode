@@ -1,6 +1,4 @@
 const Product = require("../models/product");
-const mongodb = require("mongodb");
-const ObjectId = mongodb.ObjectId;
 exports.getAddProduct = (req, res, next) => {
   res.render("./admin/edit-product.ejs", {
     pageTitle: "Products",
@@ -10,13 +8,16 @@ exports.getAddProduct = (req, res, next) => {
   });
 };
 exports.postProduct = (req, res, next) => {
-  const product = new Product(
-    req.body.title,
-    req.body.price,
-    req.body.description,
-    req.body.imageUrl,
-    req.user._id
-  );
+  let title = req.body.title;
+  let price = req.body.price;
+  let description = req.body.description;
+  let imageUrl = req.body.imageUrl;
+  const product = new Product({
+    title: title,
+    price: price,
+    description: description,
+    imageUrl: imageUrl,
+  });
   product
     .save()
     .then((responce) => {
@@ -27,7 +28,7 @@ exports.postProduct = (req, res, next) => {
     });
 };
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       res.render("./admin/products.ejs", {
         prods: products,
@@ -59,11 +60,18 @@ exports.getEditProduct = (req, res, next) => {
     });
 };
 exports.postEditProduct = (req, res, next) => {
-  Product.updateProduct(
-    ObjectId.createFromHexString(req.body.id),
-    req.body,
-    req.user._id
-  )
+  let title = req.body.title;
+  let price = req.body.price;
+  let description = req.body.description;
+  let imageUrl = req.body.imageUrl;
+  Product.findById(req.body.id)
+    .then((product) => {
+      product.title = title;
+      product.price = price;
+      product.description = description;
+      product.imageUrl = imageUrl;
+      return product.save();
+    })
     .then(() => {
       res.redirect("/admin/products");
     })
@@ -72,10 +80,9 @@ exports.postEditProduct = (req, res, next) => {
     });
 };
 exports.deleteProduct = (req, res, next) => {
-  const id = ObjectId.createFromHexString(req.body.id);
-  Product.deleteById(id)
+  const id = req.body.id;
+  Product.findByIdAndDelete(id)
     .then(() => {
-      req.user.deleteCart(id);
       res.redirect("/");
     })
     .catch((err) => {
