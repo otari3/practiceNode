@@ -9,7 +9,7 @@
                         <% products.forEach(product => { %>
                                 <li class="list">
                                    <p class="titles">  
-                                    <%=product.title%> 
+                                    <%=product.productId.title%> 
                                    </p>
                                    <p class="titles">quantity: <%=product.quantity%></p>
                                     <form action="/cart-delete-item" method="post"> 

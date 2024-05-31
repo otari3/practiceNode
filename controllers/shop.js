@@ -59,18 +59,14 @@ exports.postUser = (req, res, next) => {
     });
 };
 exports.getCart = (req, res, next) => {
-  req.user
-    .getCart()
-    .then((products) => {
-      res.render("./shop/cart.ejs", {
-        pageTitle: "cart",
-        path: "/cart",
-        products: products,
-      });
-    })
-    .catch((err) => {
-      throw err;
+  req.user.populate("cart.items.productId").then((p) => {
+    let products = p.cart.items;
+    res.render("./shop/cart.ejs", {
+      pageTitle: "cart",
+      path: "/cart",
+      products: products,
     });
+  });
 };
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
