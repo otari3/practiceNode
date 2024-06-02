@@ -48,6 +48,7 @@ userSchema.methods.addToCart = function (product) {
   this.cart = updatedCart;
   return this.save();
 };
+
 userSchema.methods.deleteCart = function (prodId) {
   let updatedCart = this.cart.items.filter((p) => {
     return p._id.toString() !== prodId.toString();
