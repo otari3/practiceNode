@@ -5,6 +5,13 @@ const app = express();
 const mongoConnect = require("./helpers/database");
 const User = require("./models/users");
 const mongoose = require("mongoose");
+const auth = require("./routes/auth");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
+const store = new MongoDBStore({
+  uri: "mongodb+srv://oto:tvali333@cluster0.azczi3n.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0",
+  collection: "mySessions",
+});
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
@@ -15,17 +22,29 @@ app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  session({
+    secret: "my secret",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
 app.use((req, res, next) => {
-  User.findById("6659b335866f4ca9e020320c")
-    .then((users) => {
-      req.user = users;
-      next();
-    })
-    .catch((err) => {
-      throw err;
-    });
+  if (req.session.user) {
+    User.findById(req.session.user._id)
+      .then((users) => {
+        req.user = users;
+        next();
+      })
+      .catch((err) => {
+        throw err;
+      });
+  } else {
+    next();
+  }
 });
-
+app.use(auth);
 app.use("/admin", adminRoutes.router);
 app.use(shopRoutes);
 app.use(wrongPage.wrongPage);
