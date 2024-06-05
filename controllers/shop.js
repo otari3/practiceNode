@@ -9,6 +9,7 @@ exports.home = (req, res, next) => {
         prods: products,
         path: "/",
         pageTitle: "home",
+        isLogIn: req.session.isLogedIn
       });
     })
     .catch((err) => {
@@ -22,6 +23,7 @@ exports.getProducts = (req, res, next) => {
         prods: products,
         path: "/products",
         pageTitle: "products",
+        isLogIn: req.session.isLogedIn
       });
     })
     .catch((err) => {
@@ -36,6 +38,7 @@ exports.getProduct = (req, res, next) => {
         product: product,
         path: "/details",
         pageTitle: "details",
+        isLogIn: req.session.isLogedIn
       });
     })
     .catch((err) => {
@@ -46,6 +49,7 @@ exports.getSingUp = (req, res, next) => {
   res.render("./shop/users.ejs", {
     pageTitle: "Userlogin",
     path: "/userlogin",
+    isLogIn: req.session.isLogedIn
   });
 };
 exports.postUser = (req, res, next) => {
@@ -66,6 +70,7 @@ exports.getCart = (req, res, next) => {
       pageTitle: "cart",
       path: "/cart",
       products: products,
+      isLogIn: req.session.isLogedIn
     });
   });
 };
@@ -96,6 +101,7 @@ exports.getCheckOut = (req, res, next) => {
   res.render("./shop/checkout.ejs", {
     pageTitle: "checkout",
     path: "/checkout",
+    isLogIn: req.session.isLogedIn
   });
 };
 exports.postOrders = (req, res, next) => {

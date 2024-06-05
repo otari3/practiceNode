@@ -3,6 +3,7 @@ exports.getSingUp = (req, res, next) => {
   res.render("./shop/users.ejs", {
     pageTitle: "Userlogin",
     path: "/userlogin",
+    isLogIn: req.session.isLogedIn,
   });
 };
 

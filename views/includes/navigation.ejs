@@ -11,6 +11,7 @@
           >Products</a
         >
       </li>
+      <% if (isLogIn) { %>
       <li class="main-header__item">
         <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
       </li>
@@ -33,15 +34,19 @@
           >Admin Products
         </a>
       </li>
-      <li class="main-header__item">
-        <a
-          class="<%= path === '/userlogin' ? 'active' : '' %>"
-          href="/userlogin"
-          >Sign Up
-        </a>
-      </li>
+      <%}%>
     </ul>
   </nav>
+  <ul class="login">
+    <li class="main-header__item login">
+      <a class="<%= path === '/userlogin' ? 'active' : '' %>" href="/userlogin"
+        >Login In
+      </a>
+      <a class="<%= path === '/userlogin' ? 'active' : '' %>" href="/userlogin"
+        >Login Out
+      </a>
+    </li>
+  </ul>
 </header>
 
 <nav class="mobile-nav">
@@ -54,6 +59,7 @@
         >Products</a
       >
     </li>
+    <% if (isLogIn) { %>
     <li class="mobile-nav__item">
       <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
     </li>
@@ -76,5 +82,6 @@
         >Admin Products
       </a>
     </li>
+    <% } %>
   </ul>
 </nav>
