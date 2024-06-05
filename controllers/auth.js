@@ -18,3 +18,8 @@ exports.login = (req, res, next) => {
       throw err;
     });
 };
+exports.logout = (req, res, next) => {
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
+};

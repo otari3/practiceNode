@@ -42,9 +42,9 @@
       <a class="<%= path === '/userlogin' ? 'active' : '' %>" href="/userlogin"
         >Login In
       </a>
-      <a class="<%= path === '/userlogin' ? 'active' : '' %>" href="/userlogin"
-        >Login Out
-      </a>
+      <form action="/logout" method="post">
+        <button type="submit" class="main-header__item login">Login Out</button>
+      </form>
     </li>
   </ul>
 </header>
